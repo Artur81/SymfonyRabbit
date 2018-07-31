@@ -27,11 +27,11 @@ class IndexController extends Controller
 
             $data = $form->getData();
 
-            $message = (new \Swift_Message($data['title']))
+            $message = (new \Swift_Message($data->getTitle()))
                 ->setFrom('send@example.com')
-                ->setTo($data['email'])
+                ->setTo($data->getEmail())
                 ->setBody(
-                    $data['content']
+                    $data->getContent()
                 )
             ;
             $mailer->send($message);
