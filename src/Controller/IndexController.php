@@ -24,8 +24,18 @@ class IndexController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $data = $form->getData();
-            $this->get('old_sound_rabbit_mq.emailing_producer')->publish(json_encode($data));
+
+            $message = (new \Swift_Message($data['title']))
+                ->setFrom('send@example.com')
+                ->setTo($data['email'])
+                ->setBody(
+                    $data['content']
+                )
+            ;
+            $mailer->send($message);
+
         }
 
         return $this->render('index/index.html.twig', [

@@ -1,5 +1,5 @@
 <?php
-namespace App\Rabbit;
+namespace App\Consumer;
 
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -23,18 +23,8 @@ class EmailService implements ConsumerInterface
      */
     public function execute(AMQPMessage $msg) : int
     {
-        $data = json_decode($msg->body, true);
-
-        $message = (new \Swift_Message($data['title']))
-            ->setFrom('send@example.com')
-            ->setTo($data['email'])
-            ->setBody(
-                $data['content']
-            )
-        ;
-
         $transport = $this->getTransport();
-        $transport->send($message);
+        $transport->send(unserialize($msg->body));
         $transport->stop();
 
         return ConsumerInterface::MSG_ACK;

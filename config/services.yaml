@@ -31,5 +31,8 @@ services:
     # please note that last definitions always *replace* previous ones
 
     email_service:
-        class: App\Rabbit\EmailService
+        class: App\Consumer\EmailService
+
+    swiftmailer.mailer.default.spool.rabbitmq:
+        class: App\Utils\Mailer\RabbitMqSpool
 
